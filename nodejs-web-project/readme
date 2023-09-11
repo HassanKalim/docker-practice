@@ -1,0 +1,21 @@
+docker build . -t  node-web-app
+docker run -p 49160:8080 -d node-web-app
+
+The two commands you've provided are used to build and run a Docker container from a Docker image. Here's an explanation of each command:
+
+1. `docker build . -t node-web-app`
+
+   - `docker build`: This command is used to build a Docker image from a Dockerfile.
+   - `.`: The dot (`.`) specifies the build context, which is the current directory. In this context, Docker looks for a file called `Dockerfile` that contains instructions for building the image.
+   - `-t node-web-app`: This part of the command tags the resulting image with the name "node-web-app." The `-t` flag stands for "tag," and it's used to assign a name and optionally a tag to the image. In this case, the image will be named "node-web-app."
+
+   When you run this command, Docker will read the instructions from the `Dockerfile` in the current directory and build an image called "node-web-app."
+
+2. `docker run -p 49160:8080 -d node-web-app`
+
+   - `docker run`: This command is used to create and start a new Docker container from an image.
+   - `-p 49160:8080`: This part of the command maps port 49160 on the host to port 8080 on the container. It means that you can access the web application running inside the container by connecting to port 49160 on your host machine.
+   - `-d`: This flag tells Docker to run the container in detached mode, which means it runs in the background. You'll get the container's ID as output, and you can continue using your terminal.
+   - `node-web-app`: This is the name of the Docker image you want to use to create the container. It refers to the image you built in the previous step using the `-t` flag.
+
+   When you run this command, Docker will create a new container from the "node-web-app" image, and it will be running your Node.js web application on port 8080 inside the container. Port 8080 on the container is mapped to port 49160 on your host machine, so you can access the web application by opening a web browser and navigating to `http://localhost:49160` or making HTTP requests to `http://localhost:49160` from other applications.
