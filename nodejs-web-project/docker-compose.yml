@@ -9,7 +9,7 @@ services:
     ports:
       - "49160:8080"
     volumes:
-      - ./app:/usr/src/app
+      - ./:/usr/src/app
     networks:
       - node-network
 
