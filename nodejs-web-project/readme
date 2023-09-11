@@ -1,9 +1,9 @@
-docker build . -t  node-web-app
-docker run -p 49160:8080 -d node-web-app
+*docker build . -t  node-web-app*
+*docker run -p 49160:8080 -d node-web-app*
 
 The two commands you've provided are used to build and run a Docker container from a Docker image. Here's an explanation of each command:
 
-1. `docker build . -t node-web-app`
+*1. `docker build . -t node-web-app`*
 
    - `docker build`: This command is used to build a Docker image from a Dockerfile.
    - `.`: The dot (`.`) specifies the build context, which is the current directory. In this context, Docker looks for a file called `Dockerfile` that contains instructions for building the image.
@@ -11,7 +11,7 @@ The two commands you've provided are used to build and run a Docker container fr
 
    When you run this command, Docker will read the instructions from the `Dockerfile` in the current directory and build an image called "node-web-app."
 
-2. `docker run -p 49160:8080 -d node-web-app`
+*2. `docker run -p 49160:8080 -d node-web-app`*
 
    - `docker run`: This command is used to create and start a new Docker container from an image.
    - `-p 49160:8080`: This part of the command maps port 49160 on the host to port 8080 on the container. It means that you can access the web application running inside the container by connecting to port 49160 on your host machine.
@@ -19,3 +19,65 @@ The two commands you've provided are used to build and run a Docker container fr
    - `node-web-app`: This is the name of the Docker image you want to use to create the container. It refers to the image you built in the previous step using the `-t` flag.
 
    When you run this command, Docker will create a new container from the "node-web-app" image, and it will be running your Node.js web application on port 8080 inside the container. Port 8080 on the container is mapped to port 49160 on your host machine, so you can access the web application by opening a web browser and navigating to `http://localhost:49160` or making HTTP requests to `http://localhost:49160` from other applications.
+
+*Second Way To Run Docker Container*
+
+To create a `docker-compose.yml` file for your Node.js application using the provided Dockerfile, you can define the services, networks, and volumes in the following way:
+
+```yaml
+version: '3'
+services:
+  node-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: node-app-image
+    container_name: node-app-container
+    ports:
+      - "49160:8080"
+    volumes:
+      - ./app:/usr/src/app
+    networks:
+      - node-network
+
+networks:
+  node-network:
+```
+
+In this `docker-compose.yml` file:
+
+- We define a service named `node-app` that corresponds to your Node.js application.
+- The `build` section specifies the build context (the current directory where your Dockerfile is located) and the Dockerfile to use.
+- We set a custom image name (`node-app-image`) for the built image.
+- The `container_name` is specified to give a custom name to the running container.
+- We map port `49160` on the host to port `8080` on the container, just as you did in your `docker run` command.
+- We define a volume that mounts the `./app` directory from your host to the `/usr/src/app` directory inside the container. This ensures that changes to your application code on the host are reflected inside the container.
+- We create a custom Docker network named `node-network` to allow communication between containers if needed.
+
+To use this `docker-compose.yml` file, follow these steps:
+
+1. Save the `docker-compose.yml` file in the same directory as your `Dockerfile` and application code.
+
+2. Open a terminal in the same directory and run the following command to build and start your containers:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+   This will build the Docker image based on your Dockerfile, create a container named `node-app-container`, and start it in detached mode (`-d`).
+
+3. You can check the logs to ensure everything is running correctly:
+
+   ```bash
+   docker-compose logs
+   ```
+
+4. Access your Node.js application at `http://localhost:49160`.
+
+When you're done and want to stop the containers, you can run:
+
+```bash
+docker-compose down
+```
+
+This `docker-compose.yml` file simplifies the process of managing your Node.js application in a Docker container, making it easier to scale and manage.
