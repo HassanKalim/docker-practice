@@ -23,7 +23,7 @@ RUN ng build --prod
 FROM nginx:alpine
 
 # Copy the built Angular app to the nginx web root directory
-COPY --from=build ./src /usr/share/nginx/html
+COPY --from=build ./angular-docker /usr/share/nginx/html
 
 # Expose port 80 for nginx
 EXPOSE 80

@@ -2,7 +2,7 @@ version: '3'
 services:
   angular-app:
     build:
-      context: ./src
+      context: ./angular-docker
       dockerfile: Dockerfile
     ports:
       - "80:80"
