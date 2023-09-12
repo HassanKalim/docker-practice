@@ -10,5 +10,9 @@ RUN npm install
 # RUN npm ci --omit=dev
 # Bundle app source
 COPY . .
+
+WORKDIR /usr/src/app
+RUN install
+
 EXPOSE 8080
 CMD [ "node", "server.js" ]
