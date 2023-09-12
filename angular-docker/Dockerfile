@@ -19,14 +19,20 @@ COPY . .
 # Build the Angular app for production
 RUN ng build --prod
 
-# Use a smaller nginx image to serve the Angular app
-FROM nginx:alpine
+# Use a smaller HTTP server image to serve the Angular app (e.g., 'http-server')
+FROM node:14 as final
 
-# Copy the built Angular app to the nginx web root directory
-COPY --from=build ./ /usr/share/nginx/html
+# Set the working directory in the final container
+WORKDIR /app
 
-# Expose port 80 for nginx
-EXPOSE 80
+# Copy the built Angular app to the final container
+COPY --from=build /app/dist /app/dist
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Expose a port for serving the Angular app (e.g., 8080)
+EXPOSE 8080
+
+# Install a simple HTTP server (e.g., 'http-server') to serve the Angular app
+RUN npm install -g http-server
+
+# Start the HTTP server to serve the Angular app
+CMD ["http-server", "./dist", "-p", "8080"]
